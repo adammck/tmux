@@ -619,6 +619,11 @@ const struct options_table_entry window_options_table[] = {
 	  .default_str = "#I:#W#F"
 	},
 
+	{ .name = "window-status-separator",
+	  .type = OPTIONS_TABLE_STRING,
+	  .default_str = " "
+	},
+
 	{ .name = "xterm-keys",
 	  .type = OPTIONS_TABLE_FLAG,
 	  .default_num = 0

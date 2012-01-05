@@ -148,6 +148,7 @@ status_redraw(struct client *c)
 	struct grid_cell	stdgc, lgc, rgc, gc;
 	time_t			t;
 	char		       *left, *right;
+	const char	       *separator;
 	u_int			offset, needed;
 	u_int			wlstart, wlwidth, wlavailable, wloffset, wlsize;
 	size_t			llen, rlen;
@@ -216,7 +217,9 @@ status_redraw(struct client *c)
 
 		if (wl == s->curw)
 			wloffset = wlwidth;
-		wlwidth += wl->status_width + 1;
+
+		separator = options_get_string(&wl->window->options, "window-status-separator");
+		wlwidth += wl->status_width + screen_write_strlen(utf8flag, "%s", separator);
 	}
 
 	/* Create a new screen for the window list. */
@@ -227,7 +230,9 @@ status_redraw(struct client *c)
 	RB_FOREACH(wl, winlinks, &s->windows) {
 		screen_write_cnputs(&ctx,
 		    -1, &wl->status_cell, utf8flag, "%s", wl->status_text);
-		screen_write_putc(&ctx, &stdgc, ' ');
+
+		separator = options_get_string(&wl->window->options, "window-status-separator");
+		screen_write_nputs(&ctx, -1, &stdgc, utf8flag, "%s", separator);
 	}
 	screen_write_stop(&ctx);
 
